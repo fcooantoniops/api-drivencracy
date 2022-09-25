@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import db from "../database.js";
+import db from "../db.js";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore.js";
 
