@@ -2,7 +2,7 @@ import db from "../db.js";
 import dayjs from "dayjs";
 import { ObjectId } from "mongodb";
 
-export async function createPoll(req, res){
+export async function createPool(req, res){
     let poll = req.body;
     const expireDate = dayjs().add(30, "day").format("YYYY-MM-DD HH:mm");
 
