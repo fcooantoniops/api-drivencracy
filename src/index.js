@@ -10,6 +10,10 @@ server.use(cors());
 server.use(express.json());
 server.use(router);
 
+server.get("/status", (req, res) => {
+    return res.send("ok");
+});
+
 server.listen(process.env.PORT, () => 
     console.log(`Listening on PORT ${process.env.PORT}`)
 );
