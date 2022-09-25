@@ -20,3 +20,13 @@ export async function createPoll(req, res){
         res.sendStatus(500);
     }
 }
+
+export async function listPools(req, res) {
+    try {
+      const pools = await db.collection("pools").find({}).toArray();
+      res.send(pools);
+    } catch (error) {
+      console.error(error.message);
+      res.sendStatus(500);
+    }
+}
