@@ -52,4 +52,46 @@ export async function listPoolChoices(req, res) {
       console.error(error.message);
       res.sendStatus(500);
     }
-  }
+}
+
+export async function poolResult(req, res) {
+    const { id } = req.params;
+    let mostVotedChoice = {
+      title: "Nenhuma opção recebeu votos",
+      votes: 0,
+    };
+  
+    try {
+      const isAPool = await db
+        .collection("pools")
+        .findOne({ _id: new ObjectId(id) });
+      if (!isAPool) {
+        return res.sendStatus(404);
+      }
+  
+      const poolChoices = await db
+        .collection("choices")
+        .find({ poolId: isAPool._id })
+        .toArray();
+      for (const choice of poolChoices) {
+        const votes = await db
+          .collection("votes")
+          .find({ choiceId: choice._id })
+          .toArray();
+        if (votes.length > mostVotedChoice.votes) {
+          mostVotedChoice.title = choice.title;
+          mostVotedChoice.votes = votes.length;
+        }
+      }
+  
+      const result = {
+        ...isAPool,
+        result: { ...mostVotedChoice },
+      };
+  
+      res.status(200).send(result);
+    } catch (error) {
+      console.error(error.message);
+      res.sendStatus(500);
+    }
+}
